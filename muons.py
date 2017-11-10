@@ -2,6 +2,16 @@
 
 from ROOT import TChain, TLorentzVector
 
+def four_momentum(i_lepton, tree):
+
+	pt = tree.lep_pt[i_lepton]
+	eta = tree.lep_eta[i_lepton]
+	phi = tree.lep_phi[i_lepton]
+	E = tree.lep_E[i_lepton]
+	p = TLorentzVector()
+	p.SetPtEtaPhiE(pt,eta,phi,E)
+	return p 
+
 data = TChain("mini")
 data.Add("http://opendata.atlas.cern/release/samples/Data/DataMuons.root")
 
@@ -20,14 +30,12 @@ for i in range(num_events):
 		print "Number of leptons for event ", i, " is ", n_leptons
 		assert(n_leptons==2)
 		pt1 = data.lep_pt[0] # Get pt for leptons
-		eta1 = data.lep_eta[0]
-		phi1 = data.lep_phi[0]
-		E1 = data.lep_E[0]
 		pt2 = data.lep_pt[1]			
 		print "Lepton pts are:", pt1, " and ", pt2
-		p1 = TLorentzVector()
-		p1.SetPtEtaPhiE(pt1, eta1, phi1, E1)
+		p1 = four_momentum(0, data)
+		p2 = four_momentum(1, data)
 		print "First lepton pt from vector", p1.Pt()
+		print "Second lepton pt from vector", p2.Pt()
 		print "-------------------------------------------------------"
 
 

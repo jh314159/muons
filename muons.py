@@ -33,8 +33,10 @@ for i in range(num_events):
 		p2 = four_momentum(1, data)
 		print "First lepton pt from vector", p1.Pt()
 		print "Second lepton pt from vector", p2.Pt()
+		ppair = p1 + p1
+		mpair = ppair.M()
+		print "Invariant mass of lepton pair: ", mpair
 		print "-------------------------------------------------------"
-
 
 
 

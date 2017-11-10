@@ -29,9 +29,6 @@ for i in range(num_events):
 	if n_leptons >= 2: # Look for pairs
 		print "Number of leptons for event ", i, " is ", n_leptons
 		assert(n_leptons==2)
-		pt1 = data.lep_pt[0] # Get pt for leptons
-		pt2 = data.lep_pt[1]			
-		print "Lepton pts are:", pt1, " and ", pt2
 		p1 = four_momentum(0, data)
 		p2 = four_momentum(1, data)
 		print "First lepton pt from vector", p1.Pt()

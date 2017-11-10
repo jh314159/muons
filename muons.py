@@ -29,7 +29,7 @@ def pairs_from_particles(particles):
 	'''
 	pairs = []
 	n_particles = len(particles)
-	for i in range(n_particles):
+	for i in range(n_particles-1):
 		for j in range(i+1, n_particles):
 			pair = (particles[i], particles[j])
 			pairs.append(pair)
@@ -61,10 +61,9 @@ for i in range(num_events):
 		p2 = pair[1]
 		ppair = p1 + p2
 		mpair = ppair.M()/1000. # Convert to Gev
-		print "Invariant mass of lepton pair: ", mpair
 		h_mpair.Fill(mpair)
 		
-		print "-------------------------------------------------------"
+		#print "-------------------------------------------------------"
 h_mpair.Draw()
 raw_input("Exit?")
 

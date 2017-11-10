@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 
-from ROOT import TChain, TLorentzVector
+from ROOT import TChain, TLorentzVector, TH1F
 
 def four_momentum(i_lepton, tree):
 
@@ -18,6 +18,9 @@ data.Add("http://opendata.atlas.cern/release/samples/Data/DataMuons.root")
 num_events = data.GetEntries()
 print ("Number of events: "), num_events
 
+nbins = 50
+h_mpair = TH1F("mpair", "Invariant mass of lepton pairs", nbins, 0, 200)
+
 # Number of events to process
 num_events = 100
 for i in range(num_events):
@@ -34,9 +37,12 @@ for i in range(num_events):
 		print "First lepton pt from vector", p1.Pt()
 		print "Second lepton pt from vector", p2.Pt()
 		ppair = p1 + p1
-		mpair = ppair.M()
+		mpair = ppair.M()/1000. # Convert to Gev
 		print "Invariant mass of lepton pair: ", mpair
+		h_mpair.Fill(mpair)
+		
 		print "-------------------------------------------------------"
-
+h_mpair.Draw()
+raw_input("Exit?")
 
 

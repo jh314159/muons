@@ -14,13 +14,15 @@ def four_momentum(i_lepton, tree):
 
 def leptons_from_event(tree):
 	'''
-	Get list of leptons as TLorentz objects
+	Get list of leptons as Particle objects
 	'''
 	leptons = []
 	n_lepton = data.lep_n
 	for i in range(n_lepton):
 		p = four_momentum(i, tree)
-		leptons.append(p)
+		q = tree.lep_charge[i]
+		particle = Particle(p,q)
+		leptons.append(particle)
 	return leptons
 
 def pairs_from_particles(particles):
@@ -36,10 +38,15 @@ def pairs_from_particles(particles):
 	return pairs
 
 def mass_of_pairs(pair):
-	p1 = pair[0]
-	p2 = pair[1]
+	p1 = pair[0].p
+	p2 = pair[1].p
 	ppair = p1 + p2
 	return ppair.M()
+
+class Particle: 
+	def __init__(self,p, q):
+		self.p = p
+		self.q = q
 
 if __name__ == "__main__":
 	data = TChain("mini")

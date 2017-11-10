@@ -41,29 +41,30 @@ def mass_of_pairs(pair):
 	ppair = p1 + p2
 	return ppair.M()
 
-data = TChain("mini")
-data.Add("http://opendata.atlas.cern/release/samples/Data/DataMuons.root")
+if __name__ == "__main__":
+	data = TChain("mini")
+	data.Add("http://opendata.atlas.cern/release/samples/Data/DataMuons.root")
 
-num_events = data.GetEntries()
+	num_events = data.GetEntries()
 
-nbins = 50 # Histogram number of bins
-h_mpair = TH1F("mpair", "Invariant mass of lepton pairs", nbins, 0, 200)
+	nbins = 50 # Histogram number of bins
+	h_mpair = TH1F("mpair", "Invariant mass of lepton pairs", nbins, 0, 200)
 
-num_events = 10000 # Number of events to process
-for i in range(num_events):
-	data.GetEntry(i) # Read in the entry	
-	# Get number of leptons for the event
-	n_leptons = data.lep_n
-	if n_leptons >= 2: # Look for pairs
-		leptons = leptons_from_event(data)
-		pairs = pairs_from_particles(leptons)
-		#assert(n_leptons==2)
-		for pair in pairs:
-			mpair = mass_of_pairs(pair)/1000. # Convert to GeV
-			h_mpair.Fill(mpair)
+	num_events = 10000 # Number of events to process
+	for i in range(num_events):
+		data.GetEntry(i) # Read in the entry	
+		# Get number of leptons for the event
+		n_leptons = data.lep_n
+		if n_leptons >= 2: # Look for pairs
+			leptons = leptons_from_event(data)
+			pairs = pairs_from_particles(leptons)
+			#assert(n_leptons==2)
+			for pair in pairs:
+				mpair = mass_of_pairs(pair)/1000. # Convert to GeV
+				h_mpair.Fill(mpair)
 		
 		
-h_mpair.Draw()
-raw_input("Exit?")
+	h_mpair.Draw()
+	raw_input("Exit?")
 
 

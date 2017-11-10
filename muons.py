@@ -8,3 +8,14 @@ data.Add("http://opendata.atlas.cern/release/samples/Data/DataMuons.root")
 num_events = data.GetEntries()
 print ("Number of events: "), num_events
 
+# Number of events to process
+num_events = 10
+
+for i in range(num_events):
+	# Read in the entry
+	data.GetEntry(i)
+	
+	# Get number of leptons for the event
+	n_leptons = data.lep_n
+	print "Number of leptons for event ", i, " is ", n_leptons
+

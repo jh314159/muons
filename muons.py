@@ -12,6 +12,29 @@ def four_momentum(i_lepton, tree):
 	p.SetPtEtaPhiE(pt,eta,phi,E)
 	return p 
 
+def leptons_from_event(tree):
+	'''
+	Get list of leptons as TLorentz objects
+	'''
+	leptons = []
+	n_lepton = data.lep_n
+	for i in range(n_lepton):
+		p = four_momentum(i, tree)
+		leptons.append(p)
+	return leptons
+
+def pairs_from_particles(particles):
+	'''
+	Get all possible pairs of particles
+	'''
+	pairs = []
+	n_particles = len(particles)
+	for i in range(n_particles):
+		for j in range(i+1, n_particles):
+			pair = (particles[i], particles[j])
+			pairs.append(pair)
+	return pairs
+
 data = TChain("mini")
 data.Add("http://opendata.atlas.cern/release/samples/Data/DataMuons.root")
 
@@ -30,12 +53,12 @@ for i in range(num_events):
 	# Get number of leptons for the event
 	n_leptons = data.lep_n
 	if n_leptons >= 2: # Look for pairs
-		print "Number of leptons for event ", i, " is ", n_leptons
+		leptons = leptons_from_event(data)
+		pairs = pairs_from_particles(leptons)
 		#assert(n_leptons==2)
-		p1 = four_momentum(0, data)
-		p2 = four_momentum(1, data)
-		print "First lepton pt from vector", p1.Pt()
-		print "Second lepton pt from vector", p2.Pt()
+		pair = pairs[0]
+		p1 = pair[0]
+		p2 = pair[1]
 		ppair = p1 + p2
 		mpair = ppair.M()/1000. # Convert to Gev
 		print "Invariant mass of lepton pair: ", mpair

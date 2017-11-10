@@ -22,7 +22,7 @@ nbins = 50
 h_mpair = TH1F("mpair", "Invariant mass of lepton pairs", nbins, 0, 200)
 
 # Number of events to process
-num_events = 100
+num_events = 10000
 for i in range(num_events):
 	# Read in the entry
 	data.GetEntry(i)
@@ -31,12 +31,12 @@ for i in range(num_events):
 	n_leptons = data.lep_n
 	if n_leptons >= 2: # Look for pairs
 		print "Number of leptons for event ", i, " is ", n_leptons
-		assert(n_leptons==2)
+		#assert(n_leptons==2)
 		p1 = four_momentum(0, data)
 		p2 = four_momentum(1, data)
 		print "First lepton pt from vector", p1.Pt()
 		print "Second lepton pt from vector", p2.Pt()
-		ppair = p1 + p1
+		ppair = p1 + p2
 		mpair = ppair.M()/1000. # Convert to Gev
 		print "Invariant mass of lepton pair: ", mpair
 		h_mpair.Fill(mpair)
